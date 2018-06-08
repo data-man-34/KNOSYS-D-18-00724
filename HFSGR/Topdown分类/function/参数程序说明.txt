@@ -1,0 +1,14 @@
+
+HFSSSL_main_Parameter程序中的代码说明（主要是在不同参数下的实验结果）
+
+
+
+Feature selection阶段
+alpha_cell{1,i}{k,kk}
+i是不同的alpha值；k是不同的beita值：kk是不同的mu值
+
+
+Test阶段
+accuracyMean是h*（length（mu）+1）的矩阵，其中h表示不同的特征数目，length（mu）+1代表列，其中第1列显示特征数目，其它的列都是不同mu值下的分类结果
+beita_accuracy是1*length（beita）的元胞，且每一列代表不同beita下的分类结果
+Final_accuracyMean是length(alpha)*length（beita）的元胞，每一行代表不同alpha下的分类结果
