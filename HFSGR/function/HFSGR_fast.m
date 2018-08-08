@@ -5,7 +5,7 @@
 %     Y - labels
 %     k - the number of selected features
 %     Child_num - the number of the level 2 ( that is the number of children
-%     of the root node    %%Child_numÔÚÕâÀï±íÊ¾³ı¸ùÒÔÍâµÄ·ÇÒ¶×Ó½áµãÊıÄ¿
+%     of the root node    %%Child_numåœ¨è¿™é‡Œè¡¨ç¤ºé™¤æ ¹ä»¥å¤–çš„éå¶å­ç»“ç‚¹æ•°ç›®
 %     alpha - the parameter of optimal
 %     beita - the tradeoff parameter 
 %     flag - draw the objective value
@@ -17,7 +17,7 @@
 %     Hong Zhao, modify by qianjuan Tuo 2016-12-29
 %% Function
 function [feature_slct] = HFSGR_fast(X, Y, numSelected, tree, alpha, beita, noLeafNode, F, flag)
-%  rand('seed',9);%µ±seedÈ¡¶¨Ê±£¬±£Ö¤ÁËÃ¿´ÎËæ»ú²úÉúµÄËæ»úÊıÊÇÏàÍ¬µÄ 
+%  rand('seed',9);% When seed is timed, it ensures that the random number generated at random is the same
 eps = 1e-8; % set your own tolerance
 maxIte = 10;
 for i = 1:length(noLeafNode)
@@ -28,7 +28,7 @@ maxm=max(m);
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 k=1;
 indexRoot = tree_Root(tree);% The root of the tree
- %indexRoot=max(indexRoot);%Ö»Õë¶ÔLandscape
+ %indexRoot=max(indexRoot);%only for Landscape
  internalNodes = tree_InternalNodes(tree);
   noLeafNode =[indexRoot;internalNodes];
 [~,d] = size(X{indexRoot}); % get the number of features
@@ -41,15 +41,15 @@ for j = 1:length(noLeafNode)
     XY{noLeafNode(j)} = X{noLeafNode(j)}' * Y{noLeafNode(j)};
 end
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-M=sum(F,2);%WÊÇFµÄÁĞºÍ
+M=sum(F,2);%Wæ˜¯Fçš„åˆ—å’Œ
 for i = 1:maxIte
     for j = 1:length(noLeafNode)
         %% initialization
-        D{noLeafNode(j)} = diag(0.5./max(sqrt(sum(W{noLeafNode(j)}.*W{noLeafNode(j)},2)),eps));%ÕâÀïepsÊÇ×îĞ¡µÄÕıÊı£¬ËüµÄÉèÖÃ±ÜÃâÁËÎŞÇîÖµµÄ³öÏÖ
+        D{noLeafNode(j)} = diag(0.5./max(sqrt(sum(W{noLeafNode(j)}.*W{noLeafNode(j)},2)),eps));%Here eps is the smallest positive number, and its setting avoids the appearance of infinite values
         %% Update the noLeafNode
         W_F_nonj= zeros(d,max(m));%this d is the number of features
         for k=1:length(noLeafNode) 
-             W_F_nonj=W_F_nonj + F(j,k)*W{noLeafNode(k)};%ÕâÀïµ±j=kÊ±£¬F(j,j)=0
+             W_F_nonj=W_F_nonj + F(j,k)*W{noLeafNode(k)};%when j=kï¼ŒF(j,j)=0
         end
         W{noLeafNode(j)}=inv(XX{noLeafNode(j)}+alpha * D{noLeafNode(j)}+beita* M(j)* eye(d))*( XY{noLeafNode(j)}+beita*W_F_nonj);
     end
